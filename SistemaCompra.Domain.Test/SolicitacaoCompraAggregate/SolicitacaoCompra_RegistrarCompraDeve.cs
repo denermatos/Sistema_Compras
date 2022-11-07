@@ -15,13 +15,13 @@ namespace SistemaCompra.Domain.Test.SolicitacaoCompraAggregate
             var solicitacao = new SolicitacaoCompra("rodrigoasth", "rodrigoasth");
             var itens = new List<Item>();
             var produto = new Produto("Cedro", "Transversal 3/3", Categoria.Madeira.ToString(), 1001);
-            itens.Add(new Item(produto, 50));
+            itens.Add(new Item(produto, 100));
 
             //Quando
             solicitacao.RegistrarCompra(itens);
 
             //Então
-            //Assert.Equal(30, solicitacao.CondicaoPagamento.Valor);
+            Assert.Equal(30, solicitacao.CondicaoPagamento.Valor);
         }
 
         [Fact]

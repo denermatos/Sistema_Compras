@@ -16,6 +16,7 @@ namespace SistemaCompra.Domain.SolicitacaoCompraAggregate
         public DateTime Data { get; private set; }
         public Money TotalGeral { get; private set; }
         public Situacao Situacao { get; private set; }
+        public CondicaoPagamento CondicaoPagamento { get; set; }
 
         private SolicitacaoCompra() { }
 
@@ -35,7 +36,20 @@ namespace SistemaCompra.Domain.SolicitacaoCompraAggregate
 
         public void RegistrarCompra(IEnumerable<Item> itens)
         {
-           
+            VerificaTotalItens(itens);
+            VerificaCondicaoPagamento();
+            AddEvent(new CompraRegistradaEvent(Id, itens, TotalGeral.Value));
+        }
+
+        private void VerificaCondicaoPagamento()
+        {
+            CondicaoPagamento = TotalGeral.Value > 50000 ? new CondicaoPagamento(30) : new CondicaoPagamento(0);
+        }
+
+        private void VerificaTotalItens(IEnumerable<Item> itens)
+        {
+            if (itens.Count() <= 0) 
+                throw new BusinessRuleException("O total de itens de compra deve ser maior que 0.");
         }
     }
 }
